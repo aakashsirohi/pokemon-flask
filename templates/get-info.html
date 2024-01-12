@@ -1,61 +1,59 @@
-{% extends 'base.html' %}
-
-{% block title %}Home{% endblock %}
-
-{% block content %}
+{% extends 'base.html' %} {% block title %}Home{% endblock %} {% block content
+%}
 <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Get Pokémon Info</title>
-    </head>
-    <h1 style="text-align: center;">Welcome to the Pokemon App</h1>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="flashes-container">
-                {% for category, message in messages %}
-                <div class="flash-message {% if category == 'success' %}success{% elif category == 'info' %}info{% elif category == 'danger' %}danger{% endif %}">
-                    {{ message }}
-                </div>
-                {% endfor %}
-            </div>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Get Pokémon</title>
+  </head>
+  <h1 style="text-align: center">Welcome to the Pokemon Game</h1>
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %}
+  <div class="flashes-container">
+    {% for category, message in messages %}
+    <div
+      class="flash-message {% if category == 'success' %}success{% elif category == 'info' %}info{% elif category == 'danger' %}danger{% endif %}"
+    >
+      {{ message }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %} {% endwith %}
+  <nav>
+    <ul>
+      <li><a class="button" href="/">Home</a></li>
+      <li><a class="button" href="{{ url_for('index') }}">Get Pokémon</a></li>
+      <li><a class="button" href="{{ url_for('my_team') }}">My Team</a></li>
+      <li><a class="button" href="{{ url_for('battle') }}">Opponents</a></li>
+    </ul>
+    <div class="right-side">
+      {% if current_user.is_authenticated %}
+      <a class="button">Welcome {{ current_user.username }}</a>
+      <a class="button" href="{{ url_for('change_password') }}"
+        >Change Password</a
+      >
+      <a class="button" href="{{ url_for('logout') }}">Logout</a>
+      {% else %}
+      <a class="button" href="{{ url_for('login') }}">Login</a>
+      <a class="button" href="{{ url_for('signup') }}">Signup</a>
+      {% endif %}
+    </div>
+  </nav>
+  <body>
+    <h1>Select your Pokémon</h1>
+    <form method="post" action="">
+      {{ form.hidden_tag() }}
+      <div>
+        {{ form.pokemon_name.label }}<br />
+        {{ form.pokemon_name(size=40) }}<br />
+        {% if form.pokemon_name.errors %}
+        <span class="error">{{ form.pokemon_name.errors[0] }}</span>
         {% endif %}
-    {% endwith %}
-    <nav>
-        <ul>
-            <li><a class="button" href="/">Home</a></li>
-            <li><a class="button" href="{{ url_for('index') }}">Get Pokémon</a></li>
-            <li><a class="button" href="{{ url_for('my_team') }}">My Team</a></li>
-            <li><a class="button" href="{{ url_for('battle') }}">Check Opponent</a></li>
-        </ul>
-        <div class="right-side">
-            {% if current_user.is_authenticated %}
-                <a class="button" >Welcome {{ current_user.username }}</a>
-                <a class="button" href="{{ url_for('change_password') }}">Change Password</a>
-                <a class="button" href="{{ url_for('logout') }}">Logout</a>
-            {% else %}
-                <a class="button" href="{{ url_for('login') }}">Login</a>
-                <a class="button" href="{{ url_for('signup') }}">Signup</a>
-            {% endif %}
-        </div>
-    </nav>
-    <body>
-        <h1>Get Pokémon Info</h1>
-        <form method="post" action="">
-            {{ form.hidden_tag() }}
-            <div>
-                {{ form.pokemon_name.label }}<br>
-                {{ form.pokemon_name(size=40) }}<br>
-                {% if form.pokemon_name.errors %}
-                    <span class="error">{{ form.pokemon_name.errors[0] }}</span>
-                {% endif %}
-            </div>
-            <div>
-                {{ form.submit }}
-            </div>
-        </form>
-    </body>
+      </div>
+      <div>{{ form.submit }}</div>
+    </form>
+  </body>
 </html>
-    
+
 {% endblock %}

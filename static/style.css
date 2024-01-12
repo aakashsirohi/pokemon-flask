@@ -116,7 +116,8 @@ button:hover {
 }
 
 .button-class:hover {
-    background-color: #ff0606;
+    background-color: #ebe7e7;
+    color: black;
 }
 
 /* ... (product style) */

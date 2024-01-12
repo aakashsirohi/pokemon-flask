@@ -78,7 +78,7 @@ class ChangePasswordForm(FlaskForm):
 
 class PokemonForm(FlaskForm):  # PokemonForm
     pokemon_name = StringField("Pokemon Name", validators=[DataRequired()])
-    submit = SubmitField("Get Pokemon Info", render_kw={"class": "button-class"})
+    submit = SubmitField("Meet your Pokemon", render_kw={"class": "button-class"})
 
 
 @login_manager.user_loader

@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}Pokemon App{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <h1>Pokémon Battle</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flashes-container">
+                {% for category, message in messages %}
+                <div class="flash-message {% if category == 'success' %}success{% elif category == 'info' %}info{% elif category == 'danger' %}danger{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    <nav>
+        <ul>
+            <li><a class="button" href="/">Home</a></li>
+            <li><a class="button" href="{{ url_for('index') }}">Get Pokémon</a></li>
+            <li><a class="button" href="{{ url_for('my_team') }}">My Team</a></li>
+            <li><a class="button" href="{{ url_for('battle') }}">Opponents</a></li>
+        </ul>
+        <div class="right-side">
+            {% if current_user.is_authenticated %}
+                <a class="button" >Welcome {{ current_user.username }}</a>
+                <a class="button" href="{{ url_for('change_password') }}">Change Password</a>
+                <a class="button" href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+                <a class="button" href="{{ url_for('login') }}">Login</a>
+                <a class="button" href="{{ url_for('signup') }}">Signup</a>
+            {% endif %}
+        </div>
+    </nav>
+</head>
+<body>
+    <br>
+    <table class="product-table">
+        <thead>
+            <tr>
+                <th>Opponent</th>
+                <th>Pokemon 1</th>
+                <th>Pokemon 2</th>
+                <th>Pokemon 3</th>
+                <th>Pokemon 4</th>
+                <th>Pokemon 5</th>
+                <th>Pokemon 6</th>
+                <th>Battle</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user_id, teams in user_teams.items() %}
+                <tr>
+                    <td>{{ teams[0].user.username }}</td>
+                    {% for team in teams %}
+                        <td>
+                            {% if team %}
+                                <img style="height: 100px; width: 100px;" src="{{ team.image_url }}" alt="{{ team.pokemon_name }}" style="width: 50px; height: 50px;">
+                            {% else %}
+                                Empty
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                    {% for _ in range(6 - teams|length) %}
+                        <td>Empty</td>
+                    {% endfor %}
+                    <td>
+                            <form action="{{ url_for('battle') }}" method="post">
+                                <input type="hidden" name="opponent_user_id" value="{{ teams[0].user.id }}">
+                                <button type="submit" class="button">Battle</button>
+                            </form>   
+                          
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>        
+    </table>
+</body>
+</html>
+
+{% endblock %}

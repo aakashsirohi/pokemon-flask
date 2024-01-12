@@ -1,0 +1,38 @@
+{% extends 'base.html' %} {% block title %}Form{% endblock %} {% block content
+%}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Select your Pokémon</title>
+  </head>
+  <body>
+    <h1>Select your Pokémon</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %}
+    <div class="flashes-container">
+      {% for category, message in messages %}
+      <div
+        class="flash-message {% if category == 'success' %}success{% elif category == 'info' %}info{% elif category == 'danger' %}danger{% endif %}"
+      >
+        {{ message }}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %} {% endwith %}
+    <form method="post" action="">
+      {{ form.hidden_tag() }}
+      <div>
+        {{ form.pokemon_name.label }}<br />
+        {{ form.pokemon_name(size=40) }}<br />
+        {% if form.pokemon_name.errors %}
+        <span class="error">{{ form.pokemon_name.errors[0] }}</span>
+        {% endif %}
+      </div>
+      <div>{{ form.submit }}</div>
+    </form>
+  </body>
+</html>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Login-Pokemon{% endblock %}
+
+{% block content %}
+    <h1>Login</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flashes-container">
+                {% for category, message in messages %}
+                <div class="flash-message {% if category == 'success' %}success{% elif category == 'info' %}info{% elif category == 'danger' %}danger{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    <form method="post" action="">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit">Login</button>
+        <br>
+        <b>Don't have an account? <a class="text" style="color: rgb(99, 32, 32);" href="{{ url_for('signup') }}"> Signup </a></b>
+    </form>
+{% endblock %}

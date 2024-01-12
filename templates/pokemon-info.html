@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Pokemon App{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <h1>{{ pokemon_data.name }} - Pokémon Info</h1>
+    <nav>
+        <ul>
+            <li><a class="button" href="/">Home</a></li>
+            <li><a class="button" href="{{ url_for('index') }}">Get Pokémon</a></li>
+            <li><a class="button" href="{{ url_for('my_team') }}">My Team</a></li>
+            <li><a class="button" href="{{ url_for('battle') }}">Opponents</a></li>
+        </ul>
+        <div class="right-side">
+            {% if current_user.is_authenticated %}
+                <a class="button" >Welcome {{ current_user.username }}</a>
+                <a class="button" href="{{ url_for('change_password') }}">Change Password</a>
+                <a class="button" href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+                <a class="button" href="{{ url_for('login') }}">Login</a>
+                <a class="button" href="{{ url_for('signup') }}">Signup</a>
+            {% endif %}
+        </div>
+    </nav>
+</head>
+<body>
+    <br>
+    <br>
+    <table class="product-table">
+        <thead>
+            <tr>
+                <th>Stats</th>
+                <th>Image</th>
+                <th>Abilities</th>
+                <th>Add To Team</th>
+            </tr>
+        </thead>
+        <tbody>
+                <tr>
+                    <td>
+                        <ul>
+                            <li>HP: {{ pokemon_data.base_stats.hp }}</li>
+                            <br>
+                            <li>Attack: {{ pokemon_data.base_stats.attack }}</li>
+                            <br>
+                            <li>Defense: {{ pokemon_data.base_stats.defense }}</li>
+                        </ul>
+                    </td>
+                    <td><img style="height: 220px;width: 220px;" src="{{ pokemon_data.sprites.front_shiny }}" alt="{{ pokemon_data.name }} Shiny" class="shiny-sprite">
+                    </td>
+                    <td>
+                        <ul>
+                            {% for ability in pokemon_data.abilities %}
+                            <li>{{ ability }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>
+                        <form action="{{ url_for('add_to_team', pokemon_name=pokemon_data.name) }}" method="post">
+                            <button type="submit" class="button">Add To Team</button>
+                        </form>     
+                    </td>
+                </tr>
+        </tbody>
+    </table>
+</body>
+</html>
+
+{% endblock %}
